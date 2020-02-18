@@ -1,0 +1,10 @@
+Part 1 Deliverables:
+
+1. A list of 15-20 data-oriented business rules to be captured in your database. Each role on your team
+should be well-represented by these rules.
+
+2. A conceptual data model, depicted using E-R or UML diagram(s). Include narrative notes where
+required for clarity.
+
+3. 10-15 nontrivial information needs (queries expressed in English); 2-3 queries pertaining to each of the
+roles represented on your team.
