@@ -1,0 +1,5 @@
+### All misc files
+.*
+
+### Virtual environments
+venv
