@@ -3,7 +3,8 @@ import unittest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from entities.store import Store, Base
+from entities import Base
+from entities.store import Store
 
 class TestDBSetup(unittest.TestCase):
 
