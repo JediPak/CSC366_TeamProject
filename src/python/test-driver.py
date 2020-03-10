@@ -14,7 +14,6 @@ class TestDBSetup(unittest.TestCase):
         session.configure(bind=engine)
         self.this_session = session()
         
-
     def test1(self):
         address = '1 Grand Ave'
         city = 'San Luis Obispo'

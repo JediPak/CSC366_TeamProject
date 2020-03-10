@@ -1,5 +1,9 @@
 ### All misc files
 .*
 
+### Python garbage
+__pycache__
+*.pyc
+
 ### Virtual environments
 venv
