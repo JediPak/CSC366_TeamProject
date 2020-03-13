@@ -12,7 +12,7 @@ class Store(Base):
     zip_code = Column(Integer, nullable=False)
 
     def __repr__(self):
-        return "Store(id={}, address={}, city={}, state={}, zip={})".format(
+        return 'Store(id={}, address={}, city={}, state={}, zip_code={})'.format(
             self.store_id,
             self.address,
             self.city,
