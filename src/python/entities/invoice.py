@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, String, DateTime
 from entities import Base
 
 class Invoice(Base):
-    __tablename__ = 'store'
+    __tablename__ = 'invoice'
 
     invoice_id = Column(Integer, primary_key=True, autoincrement=True)
     supplier = Column(Integer, nullable=False)

@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, String
 from entities import Base
 
 class Supplier(Base):
-    __tablename__ = 'store'
+    __tablename__ = 'supplier'
 
     supplier_id = Column(Integer, primary_key=True, autoincrement=True)
     address = Column(String(255), nullable=False)

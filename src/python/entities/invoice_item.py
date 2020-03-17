@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, String
 from entities import Base
 
 class InvoiceItem(Base):
-    __tablename__ = 'store'
+    __tablename__ = 'invoiceItem'
 
     invoice_id = Column(Integer, primary_key=True, autoincrement=True)
     item_id = Column(Integer, primary_key=True)
