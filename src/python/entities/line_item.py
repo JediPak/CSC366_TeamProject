@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from entities import Base
 
 class LineItem(Base):
-    __tablename__= 'line_item'
+    __tablename__= 'lineItem'
 
     ordinal = Column(Integer, primary_key=True)
 
