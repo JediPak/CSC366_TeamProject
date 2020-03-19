@@ -62,16 +62,16 @@ class TestDBSetup(unittest.TestCase):
 
     def test_add_invoice(self):
         supplier = 1
-        branch = 1
+        store = 1
         new_invoice = Invoice(
-            supplier=supplier,
-            branch=branch
+            supplier_id=supplier,
+            store_id=store
         )
         self.this_session.add(new_invoice)
 
         out_invoice = self.this_session.query(Invoice).filter_by(invoice_id=1).first()
-        self.assertEqual(out_invoice.supplier, 1)
-        self.assertEqual(out_invoice.branch, 1)
+        self.assertEqual(out_invoice.supplier_id, supplier)
+        self.assertEqual(out_invoice.store_id, store)
 
 if __name__ == '__main__':
     unittest.main()
