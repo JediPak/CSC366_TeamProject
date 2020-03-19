@@ -9,3 +9,6 @@ class TableNames(enum.Enum):
     EMPLOYEE = 'employee'
     EMPLOYEE_INFO = 'employeeInfo'
     BRANCH = 'branch'
+    PAYCHECK = 'paycheck'
+    TIME_CARD = 'timeCard'
+    TIME_CARD_ENTRY = 'timeCardEntry'
