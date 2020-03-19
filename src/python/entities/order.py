@@ -23,6 +23,11 @@ class MenuItem(Base):
 
     UniqueConstraint(name)
 
+    __mapper_args__ = {
+        'polymorphic_identity':'menuItem',
+        'polymorphic_on':type
+    }
+
     def __repr__(self):
         return (
             'MenuItem(id={}, name={}, type={}, price={})'
