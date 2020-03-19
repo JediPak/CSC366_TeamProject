@@ -1,12 +1,12 @@
 from sqlalchemy import Column, Integer, String, Date, Float
 
-from entities import Base
+from entities import Base, TableNames
+from order import MenuItem, ItemType
 
 import enum
-from menu_item import MenuItem
 
 class AddOn(MenuItem):
-    __tablename__ = 'addOn'
+    __tablename__ = TableNames.ADD_ON.value
 
     add_on_id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(255), nullable=False)

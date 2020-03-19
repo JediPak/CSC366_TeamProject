@@ -1,15 +1,12 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 
-from entities import Base
-from add_on import AddOn
-from ingredient import Ingredient
+from entities import Base, TableNames
 
 class AddOnIngredient(Base):
-    __tablename__ = 'addOnIngredient'
+    __tablename__ = TableNames.ADD_ON_INGREDIENT.value
 
-    ingredient_id = Column(Integer, ForeignKey(Ingredient.id), primary_key=True)
-    add_on_id = Column(Integer, ForeignKey(AddOn.id), primary_key=True)
-
+    ingredient_id = Column(Integer, ForeignKey('{}.id'.format(TableNames.INGREDIENT.value),default=None), primary_key=True)
+    add_on_id = Column(Integer, ForeignKey('{}.id'.format(TableNames.ADD_ON.value),default=None), primary_key=True)
 
 
     def __repr__(self):

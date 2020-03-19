@@ -1,9 +1,10 @@
 from sqlalchemy import Column, Integer, String
 
-from entities import Base
+from entities import Base, TableNames
+
 
 class Ingredient(Base):
-    __tablename__ = 'ingredient'
+    __tablename__ = TableNames.INGREDIENT.value
 
     ingredient_id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(255), nullable=False)

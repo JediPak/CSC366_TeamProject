@@ -1,12 +1,12 @@
 from sqlalchemy import Column, Integer, String, Date, Float
 
-from entities import Base
+from entities import Base, TableNames
+from order import MenuItem, ItemType
 
 import enum
-from menu_item import MenuItem
 
 class PremadeItem(MenuItem):
-    __tablename__ = 'premadeItem'
+    __tablename__ = TableNames.PREMADE_ITEM.value
 
     premade_item_id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(255), nullable=False)

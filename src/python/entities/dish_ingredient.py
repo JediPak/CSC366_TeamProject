@@ -1,15 +1,13 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 
-from entities import Base
-from main_dish import MainDish
-from ingredient import Ingredient
+from entities import Base, TableNames
+
 
 class DishIngredient(Base):
-    __tablename__ = 'dishIngredient'
+    __tablename__ = TableNames.DISH_INGREDIENT.value
 
-    ingredient_id = Column(Integer, ForeignKey(Ingredient.id), primary_key=True)
-    main_dish_id = Column(Integer, ForeignKey(MainDish.id), primary_key=True)
-
+    ingredient_id = Column(Integer, ForeignKey('{}.id'.format(TableNames.INGREDIENT.value),default=None), primary_key=True)
+    main_dish_id = Column(Integer, ForeignKey('{}.id'.format(TableNames.MAIN_DISH.value),default=None), primary_key=True)
 
 
     def __repr__(self):
