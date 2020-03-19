@@ -8,6 +8,7 @@ from entities.branch import Branch
 from entities.employee import *
 from entities.pay import PayCheck, TimeCard, Entry, HourType
 from entities.order import *
+from entities.food_item import *
 
 
 from datetime import date
@@ -143,6 +144,54 @@ class TestDBSetup(unittest.TestCase):
                 (receipt, menu_item, line_item)
         )
         self.this_session.flush()
+
+
+    def test_add_food_items(self):
+        add_on = AddOn(
+            name = "Sour Cream",
+            type = ItemType.ADDON,
+            price = 0.75
+        )
+
+        main_dish = MainDish(
+            name = "Ceviche",
+            type = ItemType.APPETIZER,
+            price = 12.50
+        )
+
+        premade_item = PremadeItem(
+            name = "Housemade Tortilla Chips",
+            type = ItemType.PREMADE,
+            price = 3.00,
+            sell_by = '2020-03-24',
+            packaged_on = '2020-03-19'
+        )
+
+        add_on_ingredient = AddOnIngredient(
+            ingredient_id = 1,
+            add_on_ingredient = 1
+        )
+
+        dish_ingredient = DishIngredient(
+            ingredient_id = 1,
+            main_dish_ingredient = 1
+        )
+
+        dish_add_on = DishAddOn(
+            main_dish_ingredient = 1,            
+            add_on_id = 1
+        )
+
+        self.this_session.add_all(
+            (add_on, main_dish, 
+            premade_item, 
+            add_on_ingredient,
+            dish_ingredient,
+            dish_add_on)
+        )
+
+        self.this_session.flush()
+
 
 if __name__ == '__main__':
     unittest.main()
