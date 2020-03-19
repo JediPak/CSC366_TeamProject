@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, Decimal
+from sqlalchemy import Column, Integer, String, Date, Float
 
 from entities import Base
 
@@ -15,8 +15,8 @@ class PremadeItem(Base):
 
     premade_item_id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(255), nullable=False)
-    type = Column(Enum(PremadeType), nullable=False)
-    price = Column(Decimal, nullable=False)
+    type = Column(enum.Enum(PremadeType), nullable=False)
+    price = Column(Float(precision='7,2'), nullable=False)
     sell_by = Column(Date, nullable=False)
     packaged_on = Column(Date, nullable=False)
 

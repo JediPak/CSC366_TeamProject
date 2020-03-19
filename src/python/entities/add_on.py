@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, Decimal
+from sqlalchemy import Column, Integer, String, Date, Float
 
 from entities import Base
 
@@ -16,8 +16,8 @@ class AddOn(Base):
 
     add_on_id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(255), nullable=False)
-    type = Column(Enum(AddOnType), nullable=False)
-    price = Column(Decimal, nullable=False)
+    type = Column(enum.Enum(AddOnType), nullable=False)
+    price = Column(Float(precision='7,2'), nullable=False)
 
     def __repr__(self):
         return "AddOn(id={}, name={}, type={}, price={})".format(
