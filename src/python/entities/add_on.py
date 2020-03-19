@@ -3,20 +3,14 @@ from sqlalchemy import Column, Integer, String, Date, Float
 from entities import Base
 
 import enum
+from menu_item import MenuItem
 
-
-class AddOnType(enum.Enum):
-    TOPPING = 0   # ex. olives
-    SAUCE = 1     # ex. ranch
-    MEAT = 2      # ex. bacon
-
-
-class AddOn(Base):
+class AddOn(MenuItem):
     __tablename__ = 'addOn'
 
     add_on_id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(255), nullable=False)
-    type = Column(enum.Enum(AddOnType), nullable=False)
+    type = Column(enum.Enum(ItemType), nullable=False)
     price = Column(Float(precision='7,2'), nullable=False)
 
     def __repr__(self):
@@ -26,3 +20,8 @@ class AddOn(Base):
             self.type,
             self.price
         )
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'add_on',
+        'concrete': True
+    }
