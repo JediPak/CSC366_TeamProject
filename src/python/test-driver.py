@@ -7,6 +7,11 @@ from entities import Base
 from entities.store import Store
 from entities.supplier import Supplier
 from entities.invoice import Invoice
+from entities.branch import Branch
+from entities.employee import *
+from entities.pay import PayCheck, TimeCard, Entry, HourType
+
+from datetime import date
 
 class TestDBSetup(unittest.TestCase):
 
@@ -17,7 +22,7 @@ class TestDBSetup(unittest.TestCase):
         session.configure(bind=engine)
         self.this_session = session()
 
-    def test1(self):
+    def test_add_store(self):
         address = '1 Grand Ave'
         city = 'San Luis Obispo'
         state = 'CA'
@@ -36,7 +41,7 @@ class TestDBSetup(unittest.TestCase):
         self.assertEqual(out_store.state, state)
         self.assertEqual(out_store.zip_code, zip_code)
 
-    def test2(self):
+    def test_add_supplier(self):
         address = '1 Grand Ave'
         city = 'San Luis Obispo'
         state = 'CA'
@@ -55,7 +60,7 @@ class TestDBSetup(unittest.TestCase):
         self.assertEqual(out_supplier.state, state)
         self.assertEqual(out_supplier.zip_code, zip_code)
 
-    def test3(self):
+    def test_add_invoice(self):
         supplier = 1
         branch = 1
         new_invoice = Invoice(
