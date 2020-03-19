@@ -1,38 +1,110 @@
 import unittest
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
 
 from entities import Base
-from entities.store import Store
+from entities.branch import Branch
+from entities.employee import *
+from entities.pay import PayCheck, TimeCard, Entry, HourType
+
+from datetime import date
 
 class TestDBSetup(unittest.TestCase):
 
     def setUp(self):
         engine = create_engine('sqlite:///:memory:', echo=True)
         Base.metadata.create_all(engine)
+        event.listen(Employee.__table__, 'after_create', Employee.manager_trigger.execute_if(dialect="mysql"))
+        event.listen(TimeCard.__table__, 'after_create', TimeCard.weeks_trigger.execute_if(dialect="mysql"))
         session = sessionmaker()
         session.configure(bind=engine)
         self.this_session = session()
-        
-    def test1(self):
-        address = '1 Grand Ave'
-        city = 'San Luis Obispo'
-        state = 'CA'
-        zip_code = 93410
-        new_store = Store(
-            address=address, 
-            city=city, 
-            state=state, 
-            zip_code=zip_code
-        )
-        self.this_session.add(new_store)
 
-        out_store = self.this_session.query(Store).filter_by(store_id=1).first() 
-        self.assertEqual(out_store.address, address)
-        self.assertEqual(out_store.city, city)
-        self.assertEqual(out_store.state, state)
-        self.assertEqual(out_store.zip_code, zip_code)
+    def test_add_employees(self):
+        manager_role = Role(
+            name=RoleName.BRANCH_MANAGER,
+            type=Exemption.EXEMPT,
+            rate=5000.00
+        )
+        managed_role = Role(
+            name=RoleName.CHEF,
+            type=Exemption.NON_EXEMPT,
+            rate=20.00
+        )
+        branch = Branch(
+            address='1 Grand Ave.',
+            city='San Luis Obispo',
+            state='CA',
+            zip_code=93410
+        )
+        
+        manager_ssn = 555555555
+        manager_name = 'Joe'
+        manager_info = EmployeeInfo(
+            ssn=manager_ssn,
+            name=manager_name
+        )
+        manager = Employee(
+            emp=manager_info,
+            role=manager_role,
+            works_at=branch
+        )
+        branch.manager = manager
+
+        managed_ssn = 444444444
+        managed_name = 'Bill'
+        managed_info = EmployeeInfo(
+            ssn=managed_ssn,
+            name=managed_name
+        )
+        managed = Employee(
+            emp=managed_info,
+            role=managed_role,
+            manager=manager,
+            works_at=branch
+        )
+
+        self.this_session.add_all(
+            (manager_role, managed_role, branch, manager_info, manager, managed_info, managed)
+        )
+        self.this_session.flush()
+
+    def test_add_paycheck(self):
+        manager_role = Role(
+            name=RoleName.CEO,
+            type=Exemption.EXEMPT,
+            rate=50000.00
+        )
+        
+        manager_ssn = 555555555
+        manager_name = 'Joe'
+        manager_info = EmployeeInfo(
+            ssn=manager_ssn,
+            name=manager_name
+        )
+        manager = Employee(
+            emp=manager_info,
+            role=manager_role
+        )
+
+        pay = PayCheck(
+            emp_role=manager
+        )
+        time = TimeCard(
+            paycheck=pay
+        )
+        entry = Entry(
+            hour_type=HourType.REGULAR,
+            hours=8,
+            timecard=time
+        )
+
+
+        self.this_session.add_all(
+            (manager_role, manager_info, manager, pay, time, entry)
+        )
+        self.this_session.flush()
 
 if __name__ == '__main__':
     unittest.main()
