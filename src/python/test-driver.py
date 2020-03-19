@@ -6,6 +6,7 @@ from sqlalchemy.orm import sessionmaker
 from entities import Base
 from entities.branch import Branch
 from entities.employee import *
+from entities.pay import PayCheck, TimeCard, Entry, HourType
 
 from datetime import date
 
@@ -15,6 +16,7 @@ class TestDBSetup(unittest.TestCase):
         engine = create_engine('sqlite:///:memory:', echo=True)
         Base.metadata.create_all(engine)
         event.listen(Employee.__table__, 'after_create', Employee.manager_trigger.execute_if(dialect="mysql"))
+        event.listen(TimeCard.__table__, 'after_create', TimeCard.weeks_trigger.execute_if(dialect="mysql"))
         session = sessionmaker()
         session.configure(bind=engine)
         self.this_session = session()
@@ -65,6 +67,42 @@ class TestDBSetup(unittest.TestCase):
 
         self.this_session.add_all(
             (manager_role, managed_role, branch, manager_info, manager, managed_info, managed)
+        )
+        self.this_session.flush()
+
+    def test_add_paycheck(self):
+        manager_role = Role(
+            name=RoleName.CEO,
+            type=Exemption.EXEMPT,
+            rate=50000.00
+        )
+        
+        manager_ssn = 555555555
+        manager_name = 'Joe'
+        manager_info = EmployeeInfo(
+            ssn=manager_ssn,
+            name=manager_name
+        )
+        manager = Employee(
+            emp=manager_info,
+            role=manager_role
+        )
+
+        pay = PayCheck(
+            emp_role=manager
+        )
+        time = TimeCard(
+            paycheck=pay
+        )
+        entry = Entry(
+            hour_type=HourType.REGULAR,
+            hours=8,
+            timecard=time
+        )
+
+
+        self.this_session.add_all(
+            (manager_role, manager_info, manager, pay, time, entry)
         )
         self.this_session.flush()
 

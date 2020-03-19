@@ -58,7 +58,7 @@ class Employee(Base):
     MAX_MANAGES = 20
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    start_date = Column(Date, nullable=False, default=datetime.datetime.utcnow)
+    start_date = Column(Date, nullable=False, default=datetime.datetime.now)
     end_date = Column(Date, default=None)
 
     manager_id = Column(
