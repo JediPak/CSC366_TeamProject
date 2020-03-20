@@ -46,12 +46,8 @@ class TestDBSetup(unittest.TestCase):
                     'item_type' : 'entree',
                     'price' : '10.50',
                     'ingredients' : [
-                        {
-                            'name' : 'Rice'
-                        },
-                        {
-                            'name' : 'Cheese'
-                        }
+                        'Rice',
+                        'Cheese'
                     ]
                 },
                 {
@@ -59,12 +55,9 @@ class TestDBSetup(unittest.TestCase):
                     'item_type' : 'addon',
                     'price' : '3.50',
                     'ingredients' : [
-                        {
-                            'name' : 'Tomatoes'
-                        },
-                        {
-                            'name' : 'Onion'
-                        }
+                        'Tomatoes', 
+                        'Onion',
+                        'Jalapeno'
                     ]
                 },
                 {

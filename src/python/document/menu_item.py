@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer
-from sqlalchemy.dialects.postgresql import JSON
+from sqlalchemy.dialects.postgresql import JSONB
 
 from document import Base, TableNames
 
@@ -9,7 +9,7 @@ class MenuItem(Base):
     __tablename__ = TableNames.MENU_ITEM.value
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    menu_item = Column(JSON, nullable=False)
+    menu_item = Column(JSONB, nullable=False)
 
     SCHEMA = {
         'type' : 'array',
@@ -28,11 +28,8 @@ class MenuItem(Base):
                 },
                 'ingredients' : {
                     'type' : 'array',
-                    'properties' : {
-                        'type' : 'object',
-                        'properties' : {
-                            'name' : 'string'
-                        }
+                    'items' : {
+                        'type' : 'string'
                     }
                 }
             },
