@@ -81,6 +81,18 @@ class LineItem(Base):
             self.receipt
         )
 
+addon_ingredient_association_table = Table('addon_ingredient_association', 
+    Base.metadata,
+    Column('addon_id', Integer, ForeignKey('addOn.add_on_id')),
+    Column('ingredient_id', Integer, ForeignKey('ingredient.ingredient_id'))
+)
+
+maindish_ingredient_association_table = Table('maindish_ingredient_association',
+    Base.metadata,
+    Column('main_dish_id', Integer, ForeignKey('mainDish.main_dish_id')),
+    Column('ingredient_id', Integer, ForeignKey('ingredient.ingredient_id')),
+)
+
 class AddOn(MenuItem):
     __tablename__ = TableNames.ADD_ON.value
 
@@ -88,6 +100,11 @@ class AddOn(MenuItem):
     name = Column(String(255), nullable=False)
     type = Column(Enum(ItemType), nullable=False)
     price = Column(Float(precision='7,2'), nullable=False)
+    ingredients = relationship(
+        "Ingredient",
+        secondary=addon_ingredient_association_table,
+        back_populates="addons"
+    )
 
     def __repr__(self):
         return "AddOn(id={}, name={}, type={}, price={})".format(
@@ -110,6 +127,11 @@ class MainDish(MenuItem):
     name = Column(String(255), nullable=False)
     type = Column(Enum(ItemType), nullable=False)
     price = Column(Float(precision='7,2'), nullable=False)
+    ingredients = relationship(
+        "Ingredient",
+        secondary=maindish_ingredient_association_table,
+        back_populates="main_dishes"
+    )
 
     def __repr__(self):
         return "MainDish(id={}, name={}, type={}, price={})".format(
@@ -150,47 +172,24 @@ class PremadeItem(MenuItem):
         'concrete': True
     }
 
+class Ingredient(Base):
+    __tablename__ = TableNames.INGREDIENT.value
 
-# joiner class between AddOns and Ingredients
-class AddOnIngredient(Base):
-    __tablename__ = TableNames.ADD_ON_INGREDIENT.value
-
-    ingredient_id = Column(Integer, ForeignKey('{}.id'.format(TableNames.INGREDIENT.value),default=None), primary_key=True)
-    add_on_id = Column(Integer, ForeignKey('{}.id'.format(TableNames.ADD_ON.value),default=None), primary_key=True)
-
+    ingredient_id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(255), nullable=False)
+    addons = relationship(
+        "AddOn",
+        secondary=addon_ingredient_association_table,
+        back_populates="ingredients"
+    )
+    main_dishes = relationship(
+        "MainDish",
+        secondary=maindish_ingredient_association_table,
+        back_populates="ingredients"
+    )
 
     def __repr__(self):
-        return "AddOnIngredient(ingredient_id={}, add_on_id={})".format(
+        return "Ingredient(id={}, name={})".format(
             self.ingredient_id,
-            self.add_on_id
-        )
-
-
-# joiner class between MainDishes and Ingredients
-class DishIngredient(Base):
-    __tablename__ = TableNames.DISH_INGREDIENT.value
-
-    ingredient_id = Column(Integer, ForeignKey('{}.id'.format(TableNames.INGREDIENT.value),default=None), primary_key=True)
-    main_dish_id = Column(Integer, ForeignKey('{}.id'.format(TableNames.MAIN_DISH.value),default=None), primary_key=True)
-
-
-    def __repr__(self):
-        return "DishIngredient(ingredient_id={}, main_dish_id={})".format(
-            self.ingredient_id,
-            self.main_dish_id
-        )
-
-
-# joiner class between AddOns and MainDishes
-class DishAddOn(Base):
-    __tablename__ = TableNames.DISH_ADD_ON.value
-
-    main_dish_id = Column(Integer, ForeignKey('{}.id'.format(TableNames.MAIN_DISH.value),default=None), primary_key=True)
-    add_on_id = Column(Integer, ForeignKey('{}.id'.format(TableNames.ADD_ON.value),default=None), primary_key=True)
-
-
-    def __repr__(self):
-        return "DishAddOn(main_dish_id={}, add_on_id={})".format(
-            self.main_dish_id,
-            self.add_on_id
+            self.name
         )

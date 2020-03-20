@@ -8,7 +8,6 @@ from entities.branch import Branch
 from entities.employee import *
 from entities.pay import PayCheck, TimeCard, Entry, HourType
 from entities.order import *
-from entities.food_item import *
 
 
 from datetime import date
@@ -147,6 +146,18 @@ class TestDBSetup(unittest.TestCase):
 
 
     def test_add_food_items(self):
+        cilantro = Ingredient(
+            name = "Cilantro"
+        )
+
+        fish = Ingredient(
+            name = "Fish"
+        )
+
+        lemon = Ingredient(
+            name = "Lemon"
+        )
+
         add_on = AddOn(
             name = "Sour Cream",
             type = ItemType.ADDON,
@@ -156,38 +167,27 @@ class TestDBSetup(unittest.TestCase):
         main_dish = MainDish(
             name = "Ceviche",
             type = ItemType.APPETIZER,
-            price = 12.50
+            price = 12.50,
         )
+        main_dish.ingredients.append(fish)
+        main_dish.ingredients.append(cilantro)
+        main_dish.ingredients.append(lemon)
 
         premade_item = PremadeItem(
             name = "Housemade Tortilla Chips",
             type = ItemType.PREMADE,
             price = 3.00,
-            sell_by = '2020-03-24',
-            packaged_on = '2020-03-19'
-        )
-
-        add_on_ingredient = AddOnIngredient(
-            ingredient_id = 1,
-            add_on_ingredient = 1
-        )
-
-        dish_ingredient = DishIngredient(
-            ingredient_id = 1,
-            main_dish_ingredient = 1
-        )
-
-        dish_add_on = DishAddOn(
-            main_dish_ingredient = 1,            
-            add_on_id = 1
+            sell_by = datetime.date(2020, 3, 24),
+            packaged_on = datetime.date(2020, 3, 19)
         )
 
         self.this_session.add_all(
-            (add_on, main_dish, 
-            premade_item, 
-            add_on_ingredient,
-            dish_ingredient,
-            dish_add_on)
+            (cilantro,
+            fish,
+            lemon,
+            add_on, 
+            main_dish, 
+            premade_item)
         )
 
         self.this_session.flush()
