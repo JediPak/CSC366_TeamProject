@@ -25,20 +25,17 @@ class Receipt(Base):
             },
             'line_items' : { 
                 'type' : 'array',
+                'minItems' : 1,
                 'items' : {
-                    'type' : 'object',
-                    'properties' : {
-                        'menu_id' : {
-                            'type' : 'integer'
-                        }
-                    }
+                    'type' : 'integer'
                 }
             }
         },
         'required' : [
             'number',
             'time',
-            'branch_id'
+            'branch_id',
+            'line_items'
             ]
     }
 
