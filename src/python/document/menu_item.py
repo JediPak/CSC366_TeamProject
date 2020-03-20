@@ -36,14 +36,11 @@ class MenuItem(Base):
                             }
                         }
                     },
-                'required' : [
-                    'name',
-                    'item_type',
-                    'price'
-                    ]
+                    'required' : ['name', 'item_type', 'price']
                 }
             }
-        }
+        },
+        'required' : ['menu_items']
     }                        
     
     @staticmethod
