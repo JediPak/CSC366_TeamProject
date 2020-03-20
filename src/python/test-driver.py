@@ -8,7 +8,6 @@ from entities.branch import Branch
 from entities.employee import *
 from entities.pay import PayCheck, TimeCard, Entry, HourType
 from entities.order import *
-from entities.food_item import *
 
 
 from datetime import date
@@ -110,7 +109,17 @@ class TestDBSetup(unittest.TestCase):
         self.this_session.flush()
 
     def test_create_receipt(self):
-        receipt = Receipt()
+        branch = Branch(
+            address='1 Grand Ave.',
+            city='San Luis Obispo',
+            state='CA',
+            zip_code=93410
+        )
+
+        receipt = Receipt(
+            branch=branch
+        )
+
         name = "Pasta"
         price=13.20
         menu_item = MenuItem(
@@ -118,6 +127,7 @@ class TestDBSetup(unittest.TestCase):
             item_type = ItemType.ENTREE,
             price=price
         )
+
         ordinal = 1
         line_item = LineItem(
             ordinal=ordinal,

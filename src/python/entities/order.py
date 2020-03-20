@@ -43,12 +43,20 @@ class Receipt(Base):
     receipt_number = Column(Integer, primary_key=True)
     time = Column(DateTime, default=datetime.datetime.now)
 
+    branch_id = Column(
+        Integer,
+        ForeignKey('{}.id'.format(TableNames.BRANCH.value)),
+        nullable=False
+    )
+
+    branch = relationship('Branch')
     def __repr__(self):
         return (
-            'Receipt(receipt={}, time={})'
+            'Receipt(receipt={}, time={}, branch={})'
         ).format(
             self.receipt_number,
-            self.time
+            self.time,
+            self.branch
         )
 
 class LineItem(Base):
