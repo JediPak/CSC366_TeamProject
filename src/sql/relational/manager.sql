@@ -1,5 +1,5 @@
 SET @myManagerId = 1;
-SET @dateOfInterest = '2020-03-10'
+SET @dateOfInterest = "2020-03-10"
 
 -- What employees were on shift during a specific time?
 SELECT e.name FROM
