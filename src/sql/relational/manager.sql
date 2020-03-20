@@ -1,45 +1,69 @@
-SET @myManagerId = 1;
-SET @dateOfInterest = "2020-03-10"
+SET @myEmpId = 1;
+SET @dateOfInterest = "2020-03-10";
 
 -- What employees were on shift during a specific time?
-SELECT e.name FROM
-Employee e
-JOIN Role r
-ON e.role = r.id
-AND e.end_date = None
-JOIN PayCheck p
-ON r.id = p.emp_role
-JOIN TimeCard t
-ON p.id = t.paycheck_id
-JOIN Entry en
-ON t.id = en.timecard_id
-AND en.date = dateOfInterest
-;
+WITH
+
+my_branch as (
+    SELECT
+        b.id
+    FROM
+        branch b
+        JOIN employee e
+            ON b.manager_id = e.id
+    WHERE
+        e.emp_id = @myEmpId
+)
+
+SELECT 
+    ei.name 
+FROM
+    employee e
+    JOIN employeeInfo ei
+        ON e.emp_id = ei.emp_id
+WHERE
+    e.works_at_id in (select * from my_branch);
 
 -- What employees belong at the site I manage?
-SELECT ei.name FROM
-Employee e 
-JOIN Branch b 
-ON e.manager_id = b.manager_id
-AND e.works_at_id = b.id
-AND e.manager = myManagerId
-JOIN EmployeeInfo ei
-ON ei.emp_id = e.id
-;
+WITH
+
+my_branch as (
+    SELECT
+        b.id
+    FROM
+        branch b
+        JOIN employee e
+            ON b.manager_id = e.id
+    WHERE
+        e.emp_id = @myEmpId
+)
+
+SELECT 
+    ei.name 
+FROM
+    employee e
+    JOIN employeeInfo ei
+        ON e.emp_id = ei.emp_id
+WHERE
+    e.works_at_id in (select * from my_branch);
 
 -- How many hours are my employees working? 
-SELECT SUM(en.hours) FROM
-Employee e
-JOIN Role r
-ON e.role = r.id
-AND e.end_date = None
-AND e.manager = myManagerId
-JOIN PayCheck p
-ON r.id = p.emp_role
-JOIN TimeCard t
-ON p.id = t.paycheck_id
-AND t.is_approved = 1
-AND t.week_of = NOW() - INTERVAL 1 WEEK
-JOIN Entry en
-ON t.id = en.timecard_id
-;
+SELECT 
+    e2.emp_id,
+    t.week_of,
+    SUM(en.hours) 
+FROM
+    employee e1
+    JOIN employee e2
+        ON e1.id = e2.manager_id
+    JOIN paycheck p
+        ON e2.id = p.emp_role_id
+    JOIN timeCard t
+        ON p.id = t.paycheck_id
+    JOIN timeCardEntry en
+        ON t.id = en.timecard_id
+WHERE
+    e2.end_date is null
+    and e1.emp_id = @myEmpId
+    AND t.is_approved
+GROUP BY 1, 2;
