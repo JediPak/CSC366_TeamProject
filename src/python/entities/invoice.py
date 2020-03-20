@@ -10,7 +10,8 @@ class Invoice(Base):
     invoice_id = Column(Integer, primary_key=True, autoincrement=True)
     supplier_id = Column(Integer, ForeignKey('supplier.supplier_id'), nullable=False)
     supplier = relationship("Supplier")
-    date = Column(DateTime, default=datetime.datetime.now, nullable=False)
+    order_date = Column(DateTime, default=datetime.datetime.now, nullable=False)
+    deliver_date = Column(DateTime, default=datetime.datetime.now, nullable=False)
     branch_id = Column(Integer, ForeignKey('branch.id'), nullable=False)
     branch = relationship("Branch")
 
@@ -19,6 +20,7 @@ class Invoice(Base):
         return "Invoice(id={}, supplier={}, date={}, branch={})".format(
             self.invoice_id,
             self.supplier_id,
-            self.date,
+            self.order_date,
+            self.deliver_date,
             self.branch_id
         )
