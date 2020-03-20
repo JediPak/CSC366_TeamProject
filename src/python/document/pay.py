@@ -16,7 +16,7 @@ class Pay(Base):
         'properties' : {
             'pay_id' : { 'type' : 'number' },
             'payperiod' : { 'type' : 'string' },
-            'emp_role_id' : { 'type' : 'number' },
+            'emp_id' : { 'type' : 'number' },
             'time_cards':{
                     "type": "array",
                     "maxItems": 2,

@@ -1,28 +1,36 @@
 -- Supplier I
-SELECT invoice.branch_id, item.item_id, MIN(order_date)
-FROM invoice
-JOIN branch
-    ON invoice.branch_id = branch.id
-JOIN invoice_item
-    ON invoice.invoice_id = invoice_item.invoice_id
-JOIN item
-    ON invoice_item.item_id = item.id
+SELECT 
+    invoice.branch_id, 
+    item.name, 
+    max(order_date) most_recent
+FROM 
+    invoice
+    JOIN branch
+        ON invoice.branch_id = branch.id
+    JOIN invoiceItem
+        ON invoice.invoice_id = invoiceItem.invoice_id
+    JOIN item
+        ON invoiceItem.item_id = item.id
 GROUP BY invoice.branch_id, item.id
-ORDER BY invoice.branch_id, item.id
+ORDER BY invoice.branch_id, item.id;
 
 -- Supplier II
-SELECT i1.branch_id, AVG(i2.order_date-i1.order_date)
-FROM invoice i1
-JOIN invoice i2
-    ON i2.invoice_id = (
-        SELECT id
-        FROM invoice i3
-        WHERE i3.order_date > i2.order_date
-            AND i3.branch_id = i2.branch_id
-        ORDER BY i2.order_date
-        LIMIT 1
-    )
-        AND i1.branch_id = i2.branch_id
+WITH
+
+time_between as (
+SELECT 
+    branch_id,
+    (order_date - lag(order_date) over (partition by branch_id order by order_date asc)) time_between_ship
+FROM 
+    invoice i
+)
+
+SELECT
+    branch_id,
+    avg(time_between_ship) as avg_time_between_ship
+FROM
+    time_between
+GROUP BY branch_id;
 
 -- Supplier II ALT
 SELECT invoice_id,
@@ -35,6 +43,9 @@ FROM invoice
 ORDER BY branch_id, order_date
 
 -- Supplier III
-SELECT invoice_id
-FROM invoice
-WHERE DATEDIFF(deliver_date, order_date) > 7
+SELECT 
+    invoice_id
+FROM 
+    invoice
+WHERE 
+    DATEDIFF(deliver_date, order_date) > 7;
