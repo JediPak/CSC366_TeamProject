@@ -27,7 +27,15 @@ class Receipt(Base):
                 'type' : 'array',
                 'minItems' : 1,
                 'items' : {
-                    'type' : 'integer'
+                    'type' : 'object',
+                    'properties' : {
+                        'ordinal' {
+                            'type' : 'integer'
+                        }
+                        'menu_id' {
+                            'type' : 'integer'
+                        }
+                    }
                 }
             }
         },
