@@ -12,35 +12,40 @@ class MenuItem(Base):
     menu_item = Column(JSONB, nullable=False)
 
     SCHEMA = {
-        'type' : 'array',
-        'items' : {
-            'type' : 'object',
-            'properties' : {
-                'name' : {
-                    'type' : 'string'
-                },
-                'item_type' : {
-                    'type' : 'string',
-                    'enum' : ['appetizer', 'entree', 'dessert', 'drink', 'premade', 'addon']
-                },
-                'price' : {
-                    'type' : 'number'
-                },
-                'ingredients' : {
-                    'type' : 'array',
-                    'items' : {
-                        'type' : 'string'
-                    }
+        'type' : 'object',
+        'properties' : {
+            'menu_items' : {
+                'type' : 'array',
+                'items' : {
+                    'type' : 'object',
+                    'properties' : {
+                        'name' : {
+                            'type' : 'string'
+                        },
+                        'item_type' : {
+                            'type' : 'string',
+                            'enum' : ['appetizer', 'entree', 'dessert', 'drink', 'premade', 'addon']
+                        },
+                        'price' : {
+                            'type' : 'number'
+                        },
+                        'ingredients' : {
+                            'type' : 'array',
+                            'items' : {
+                                'type' : 'string'
+                            }
+                        }
+                    },
+                'required' : [
+                    'name',
+                    'item_type',
+                    'price'
+                    ]
                 }
-            },
-            'required' : [
-                'name',
-                'item_type',
-                'price'
-            ]
+            }
         }
-    }
-
+    }                        
+    
     @staticmethod
     def factory(json_dict):
         try:
@@ -49,5 +54,4 @@ class MenuItem(Base):
                 menu_item = json_dict
             )
         except ValidationError:
-            return None
-                    
+            return None        
