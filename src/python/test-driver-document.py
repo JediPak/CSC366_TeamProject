@@ -19,8 +19,7 @@ class TestDBSetup(unittest.TestCase):
             'postgresql://postgres:testtest@db.caoodninwjvh.us-east-2.rds.amazonaws.com:5432/postgres',
             echo=True
         )
-
-        #Base.metadata.drop_all(engine)
+        # Base.metadata.drop_all(engine)
         Base.metadata.create_all(engine)
         session = sessionmaker()
         session.configure(bind=engine)
@@ -53,14 +52,6 @@ class TestDBSetup(unittest.TestCase):
             },
             'roles' : [
                 {
-                    'role' : 'Chef',
-                    'exempt' : False,
-                    'pay' : 20.00,
-                    'start' : '2020-03-12',
-                    'end' : '2020-03-18',
-                    'branch_id' : 1
-                },
-                {
                     'role' : 'Branch Manager',
                     'exempt' : True,
                     'pay' : 3000.00,
@@ -70,12 +61,35 @@ class TestDBSetup(unittest.TestCase):
                 }
             ]
         }
+        managed_json = {
+            'emp_id' : 2,
+            'ssn' : 555555556,
+            'name' : {
+                'first' : 'Tyler',
+                'last' : 'Davis',
+                'suffix' : 'Jr.',
+                'title' : 'Mr.'
+            },
+            'roles' : [
+                {
+                    'role' : 'Chef',
+                    'exempt' : False,
+                    'pay' : 20.00,
+                    'start' : '2020-03-19',
+                    'end' : None,
+                    'branch_id' : 1,
+                    'manager_id' : 1
+                }
+            ]
+        }
 
         branch = Branch.factory(branch_json)
         emp = Employee.factory(employee_json)
+        emp2 = Employee.factory(managed_json)
         self.assertIsNotNone(branch)
         self.assertIsNotNone(emp)
-        self.this_session.add_all((branch,emp))
+        self.assertIsNotNone(emp2)
+        self.this_session.add_all((branch,emp,emp2))
         self.this_session.flush()
 
     def test_add_supplier(self):
@@ -138,11 +152,11 @@ class TestDBSetup(unittest.TestCase):
     def test_create_receipt(self):
         receipt_json = {
             'number' : 1,
-            'time' : "10/10/10",
+            'time' : '2020-03-03',
             'branch_id' : 1,
             'line_items' : [
-                1,
-                2
+                'Cola',
+                'Chips'
             ]
         }
         receipt = Receipt.factory(receipt_json)
@@ -179,24 +193,24 @@ class TestDBSetup(unittest.TestCase):
     def test_add_pay(self):
         pay_json = {
             'pay_id' : 1,
-            'payperiod' : '01-07-2020',
+            'payperiod' : '2020-01-07',
             'emp_id' : 2,
             'time_cards' :
             [
                 [
-                    '01-07-2020',
+                    '2020-01-07',
                     True,
                     [
-                        ['01-07-2020', 'REGULAR', 8],
-                        ['01-09-2020', 'REGULAR', 8]
+                        ['2020-01-07', 'REGULAR', 8],
+                        ['2020-01-09', 'REGULAR', 8]
                     ]
                 ],
                 [
-                    '01-14-2020',
+                    '2020-01-14',
                     True,
                     [
-                        ['01-14-2020', 'REGULAR', 8],
-                        ['01-16-2020', 'PTO', 8]
+                        ['2020-01-14', 'REGULAR', 8],
+                        ['2020-01-16', 'PTO', 8]
                     ]
                 ]
             ]
@@ -207,6 +221,10 @@ class TestDBSetup(unittest.TestCase):
         self.assertIsNotNone(pay)
         self.this_session.add(pay)
         self.this_session.flush()
+    
+    def tearDown(self):
+        self.this_session.commit()
+        self.this_session.close()
 
 if __name__ == '__main__':
     unittest.main()
