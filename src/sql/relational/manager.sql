@@ -21,8 +21,15 @@ FROM
     employee e
     JOIN employeeInfo ei
         ON e.emp_id = ei.emp_id
+    JOIN paycheck p
+        ON e.id = p.emp_role_id
+    JOIN timeCard t
+        ON p.id = t.paycheck_id
+    JOIN timeCardEntry en
+        ON t.id = en.timecard_id
 WHERE
-    e.works_at_id in (select * from my_branch);
+    e.works_at_id in (select * from my_branch)
+    and en.date = @dateOfInterest;
 
 -- What employees belong at the site I manage?
 WITH
