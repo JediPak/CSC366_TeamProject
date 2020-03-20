@@ -15,7 +15,7 @@ ON p.id = t.paycheck_id
 AND t.is_approved = 1
 JOIN Entry as en
 ON t.id = en.timecard_id
-AND t.date <= Cast('07/01/2020' as datetime)/*<dateB_input>*/ 
-AND t.date > Cast('07/02/2011' as datetime)/*<dateA_input> */
+AND t.date <= Cast('2020-03-19' as datetime)/*<dateB_input>*/ 
+AND t.date > Cast('2020-03-20' as datetime)/*<dateA_input> */
 AND e.id = 1 /*<employee_id_input>*/;
 
