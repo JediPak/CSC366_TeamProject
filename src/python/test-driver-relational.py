@@ -17,10 +17,10 @@ from datetime import date
 class TestDBSetup(unittest.TestCase):
 
     def setUp(self):
-        engine = create_engine('sqlite:///:memory:', echo=True)
+        engine = create_engine('sqlite://', echo=True)
         Base.metadata.create_all(engine)
-        event.listen(Employee.__table__, 'after_create', Employee.manager_trigger.execute_if(dialect="mysql"))
-        event.listen(TimeCard.__table__, 'after_create', TimeCard.weeks_trigger.execute_if(dialect="mysql"))
+        event.listen(Employee.__table__, 'after_create', Employee.manager_trigger.execute_if(dialect='mysql'))
+        event.listen(TimeCard.__table__, 'after_create', TimeCard.weeks_trigger.execute_if(dialect='mysql'))
         session = sessionmaker()
         session.configure(bind=engine)
         self.this_session = session()
