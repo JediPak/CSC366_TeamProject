@@ -9,6 +9,7 @@ from entities.invoice import Invoice
 from entities.branch import Branch
 from entities.employee import *
 from entities.pay import PayCheck, TimeCard, Entry, HourType
+from entities.order import *
 
 from datetime import date
 
@@ -102,10 +103,117 @@ class TestDBSetup(unittest.TestCase):
             timecard=time
         )
 
-
         self.this_session.add_all(
             (manager_role, manager_info, manager, pay, time, entry)
         )
+        self.this_session.flush()
+
+    def test_create_receipt(self):
+        manager_role = Role(
+            name=RoleName.CEO,
+            type=Exemption.EXEMPT,
+            rate=50000.00
+        )
+
+        manager_ssn = 555555555
+        manager_name = 'Joe'
+        manager_info = EmployeeInfo(
+            ssn=manager_ssn,
+            name=manager_name
+        )
+        manager = Employee(
+            emp=manager_info,
+            role=manager_role
+        )
+
+        branch = Branch(
+            address='1 Grand Ave.',
+            city='San Luis Obispo',
+            state='CA',
+            zip_code=93410,
+            manager=manager
+        )
+        manager.branch = branch
+
+        receipt = Receipt(
+            branch=branch
+        )
+
+        name = "Pasta"
+        price=13.20
+        menu_item1 = MainDish(
+            name=name, 
+            item_type = ItemType.ENTREE,
+            price=price
+        )
+
+        ordinal = 1
+        line_item1 = LineItem(
+            ordinal=ordinal,
+            receipt=receipt,
+            menu_item=menu_item1
+        )
+
+        name = "Enchiladas"
+        price=20.00
+        menu_item2 = AddOn(
+            name=name, 
+            item_type = ItemType.ENTREE,
+            price=price
+        )
+
+        ordinal = 2
+        line_item2 = LineItem(
+            ordinal=ordinal,
+            receipt=receipt,
+            menu_item=menu_item2
+        )
+
+        self.this_session.add_all(
+            (manager_role, manager_info, manager, branch, receipt, 
+            menu_item1, line_item1, menu_item2, line_item2)
+        )
+        self.this_session.flush()
+
+    def test_add_food_items(self):
+        cilantro = Ingredient(
+            name = "Cilantro"
+        )
+
+        fish = Ingredient(
+            name = "Fish"
+        )
+
+        lemon = Ingredient(
+            name = "Lemon"
+        )
+
+        add_on = AddOn(
+            name = "Sour Cream",
+            item_type = ItemType.ADDON,
+            price = 0.75
+        )
+
+        main_dish = MainDish(
+            name = "Ceviche",
+            item_type = ItemType.APPETIZER,
+            price = 12.50,
+        )
+        main_dish.ingredients.append(fish)
+        main_dish.ingredients.append(cilantro)
+        main_dish.ingredients.append(lemon)
+
+        premade_item = PremadeItem(
+            name = "Housemade Tortilla Chips",
+            item_type = ItemType.PREMADE,
+            price = 3.00
+        )
+
+        self.this_session.add_all(
+            (cilantro, fish, lemon,
+            add_on, main_dish, premade_item)
+        )
+
         self.this_session.flush()
 
     def test_add_supplier(self):
