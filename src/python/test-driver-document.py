@@ -97,7 +97,7 @@ class TestDBSetup(unittest.TestCase):
             'number' : 1,
             'time' : "10/10/10",
             'branch_id' : 1,
-            'items' : [
+            'line_items' : [
                 1,
                 2
             ]
