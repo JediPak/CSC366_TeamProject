@@ -1,3 +1,2 @@
 sqlalchemy
-mypy
-mysqlclient
+psycopg2
