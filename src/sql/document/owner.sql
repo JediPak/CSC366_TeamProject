@@ -85,3 +85,8 @@ FROM
         USING (item)
 GROUP BY item
 ORDER BY count(*) desc
+
+-- Owner/Board IV.
+-- The issue I had designing a query for this problem was that the 
+-- pay period is not well-defined. It is difficult to chase down
+-- who worked when and at what pay rate. 
