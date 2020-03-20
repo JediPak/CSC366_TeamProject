@@ -24,6 +24,16 @@ JOIN invoice i2
     )
         AND i1.branch_id = i2.branch_id
 
+-- Supplier II ALT
+SELECT invoice_id,
+    AVG(LAG(order_date,1))
+        over (
+            partition by branch_id
+            order by order_date
+        )
+FROM invoice
+ORDER BY branch_id, order_date
+
 -- Supplier III
 SELECT invoice_id
 FROM invoice
