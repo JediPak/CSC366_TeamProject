@@ -7,6 +7,7 @@ from document.receipt import Receipt
 from document.supplier import Supplier
 from document.invoice import Invoice
 from document.employee import Employee
+from document.pay import Pay
 
 import unittest
 
@@ -131,6 +132,38 @@ class TestDBSetup(unittest.TestCase):
         invoice = Invoice.factory(invoice_json)
         self.assertIsNotNone(invoice)
         self.this_session.add(invoice)
+        self.this_session.flush()
+
+    def test_add_pay(self):
+        pay_json = {
+            'pay_id' : 1,
+            'payperiod' : '01-07-2020',
+            'emp_role_id' : 2,
+            'time_cards' :
+            [
+                [
+                    '01-07-2020',
+                    True,
+                    [
+                        ['01-07-2020', 'REGULAR', 8],
+                        ['01-09-2020', 'REGULAR', 8]
+                    ]
+                ],
+                [
+                    '01-14-2020',
+                    True,
+                    [
+                        ['01-14-2020', 'REGULAR', 8],
+                        ['01-16-2020', 'PTO', 8]
+                    ]
+                ]
+            ]
+
+        }
+
+        pay = Pay.factory(pay_json)
+        self.assertIsNotNone(pay)
+        self.this_session.add(pay)
         self.this_session.flush()
 
 if __name__ == '__main__':
