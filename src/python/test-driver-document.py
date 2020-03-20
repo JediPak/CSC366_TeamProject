@@ -98,12 +98,8 @@ class TestDBSetup(unittest.TestCase):
             'time' : "10/10/10",
             'branch_id' : 1,
             'items' : [
-                {
-                    'menu_id' : 1
-                },
-                {
-                    'menu_id' : 2
-                }
+                1,
+                2
             ]
         }
         receipt = Receipt.factory(receipt_json)
