@@ -6,6 +6,7 @@ from sqlalchemy.orm import sessionmaker
 from entities import Base
 from entities.supplier import Supplier
 from entities.invoice import Invoice
+from entities.invoice_item import InvoiceItem
 from entities.branch import Branch
 from entities.employee import *
 from entities.pay import PayCheck, TimeCard, Entry, HourType
@@ -142,7 +143,7 @@ class TestDBSetup(unittest.TestCase):
         name = "Pasta"
         price=13.20
         menu_item1 = MainDish(
-            name=name, 
+            name=name,
             item_type = ItemType.ENTREE,
             price=price
         )
@@ -157,7 +158,7 @@ class TestDBSetup(unittest.TestCase):
         name = "Enchiladas"
         price=20.00
         menu_item2 = AddOn(
-            name=name, 
+            name=name,
             item_type = ItemType.ENTREE,
             price=price
         )
@@ -170,7 +171,7 @@ class TestDBSetup(unittest.TestCase):
         )
 
         self.this_session.add_all(
-            (manager_role, manager_info, manager, branch, receipt, 
+            (manager_role, manager_info, manager, branch, receipt,
             menu_item1, line_item1, menu_item2, line_item2)
         )
         self.this_session.flush()
@@ -228,6 +229,7 @@ class TestDBSetup(unittest.TestCase):
             zip_code=zip_code
         )
         self.this_session.add(new_supplier)
+        self.this_session.flush()
 
         out_supplier = self.this_session.query(Supplier).filter_by(supplier_id=1).first()
         self.assertEqual(out_supplier.address, address)
@@ -243,10 +245,25 @@ class TestDBSetup(unittest.TestCase):
             branch_id=branch
         )
         self.this_session.add(new_invoice)
+        self.this_session.flush()
 
         out_invoice = self.this_session.query(Invoice).filter_by(invoice_id=1).first()
         self.assertEqual(out_invoice.supplier_id, supplier)
         self.assertEqual(out_invoice.branch_id, branch)
+
+    def test_add_invoice_item(self):
+        invoice_id = 1
+        item_id = 1
+        quantity = 40
+        price = 3.50
+        new_invoice_item = InvoiceItem(
+            invoice_id=invoice_id,
+            item_id=item_id,
+            quantity=quantity,
+            price=price
+        )
+        self.this_session.add(new_invoice_item)
+        self.this_session.flush()
 
 if __name__ == '__main__':
     unittest.main()
