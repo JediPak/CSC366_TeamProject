@@ -12,3 +12,6 @@ class TableNames(enum.Enum):
     PAYCHECK = 'paycheck'
     TIME_CARD = 'timeCard'
     TIME_CARD_ENTRY = 'timeCardEntry'
+    INVOICE = 'invoice'
+    INVOICE_ITEM = 'invoiceItem'
+    SUPPLIER = 'supplier'

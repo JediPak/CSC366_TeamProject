@@ -4,6 +4,8 @@ from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
 
 from entities import Base
+from entities.supplier import Supplier
+from entities.invoice import Invoice
 from entities.branch import Branch
 from entities.employee import *
 from entities.pay import PayCheck, TimeCard, Entry, HourType
@@ -38,7 +40,7 @@ class TestDBSetup(unittest.TestCase):
             state='CA',
             zip_code=93410
         )
-        
+
         manager_ssn = 555555555
         manager_name = 'Joe'
         manager_info = EmployeeInfo(
@@ -76,7 +78,7 @@ class TestDBSetup(unittest.TestCase):
             type=Exemption.EXEMPT,
             rate=50000.00
         )
-        
+
         manager_ssn = 555555555
         manager_name = 'Joe'
         manager_info = EmployeeInfo(
@@ -105,6 +107,38 @@ class TestDBSetup(unittest.TestCase):
             (manager_role, manager_info, manager, pay, time, entry)
         )
         self.this_session.flush()
+
+    def test_add_supplier(self):
+        address = '1 Grand Ave'
+        city = 'San Luis Obispo'
+        state = 'CA'
+        zip_code = 93410
+        new_supplier = Supplier(
+            address=address,
+            city=city,
+            state=state,
+            zip_code=zip_code
+        )
+        self.this_session.add(new_supplier)
+
+        out_supplier = self.this_session.query(Supplier).filter_by(supplier_id=1).first()
+        self.assertEqual(out_supplier.address, address)
+        self.assertEqual(out_supplier.city, city)
+        self.assertEqual(out_supplier.state, state)
+        self.assertEqual(out_supplier.zip_code, zip_code)
+
+    def test_add_invoice(self):
+        supplier = 1
+        branch = 1
+        new_invoice = Invoice(
+            supplier_id=supplier,
+            branch_id=branch
+        )
+        self.this_session.add(new_invoice)
+
+        out_invoice = self.this_session.query(Invoice).filter_by(invoice_id=1).first()
+        self.assertEqual(out_invoice.supplier_id, supplier)
+        self.assertEqual(out_invoice.branch_id, branch)
 
 if __name__ == '__main__':
     unittest.main()
