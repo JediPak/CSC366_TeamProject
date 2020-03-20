@@ -3,6 +3,7 @@ from sqlalchemy.orm import sessionmaker
 
 from document import Base
 from document.branch import Branch
+from document.receipt import Receipt
 
 import unittest
 
@@ -13,7 +14,7 @@ class TestDBSetup(unittest.TestCase):
             'postgresql://postgres:testtest@db.caoodninwjvh.us-east-2.rds.amazonaws.com:5432/postgres', 
             echo=True
         )
-        Base.metadata.drop_all(engine)
+        #Base.metadata.drop_all(engine)
         Base.metadata.create_all(engine)
         session = sessionmaker()
         session.configure(bind=engine)
@@ -35,6 +36,28 @@ class TestDBSetup(unittest.TestCase):
         self.assertIsNotNone(branch)
         self.this_session.add(branch)
         self.this_session.flush()
+
+    def test_create_receipt(self):
+        receipt_json = {
+            'number' : 1,
+            'time' : "10/10/10",
+            'branch_id' : 1,
+            'items' : [
+                {
+                    'ordinal' : 3,
+                    'menu_id' : 1
+                },
+                {
+                    'ordinal' : 4,
+                    'menu_id' : 2
+                }
+            ]
+        }
+        receipt = Receipt.factory(receipt_json)
+        self.assertIsNotNone(receipt)
+        self.this_session.add(receipt)
+        self.this_session.flush()
+
         
 if __name__ == '__main__':
     unittest.main()

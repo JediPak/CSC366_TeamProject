@@ -22,8 +22,27 @@ class Receipt(Base):
             },
             'branch_id' : {
                 'type' : 'integer'
+            },
+            'line_items' : { 
+                'type' : 'array',
+                'items' : {
+                    'type' : 'object',
+                    'properties' : {
+                        'ordinal' : {
+                            'type' : 'integer'
+                         },
+                        'menu_id' : {
+                            'type' : 'integer'
+                        }
+                    }
+                }
             }
-        }
+        },
+        'required' : [
+            'number',
+            'time',
+            'branch_id'
+            ]
     }
 
     @staticmethod
