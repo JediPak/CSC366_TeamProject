@@ -97,7 +97,7 @@ class TestDBSetup(unittest.TestCase):
 
     def test_add_menu_item(self):
         menu_item_json = {
-            'items' : [
+            'menu_items' : [
                 {
                     'name' : 'Enchilada',
                     'item_type' : 'entree',
