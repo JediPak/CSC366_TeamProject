@@ -3,6 +3,7 @@ from sqlalchemy.orm import sessionmaker
 
 from document import Base
 from document.branch import Branch
+from document.receipt import Receipt
 from document.supplier import Supplier
 from document.invoice import Invoice
 from document.employee import Employee
@@ -89,6 +90,21 @@ class TestDBSetup(unittest.TestCase):
         supplier = Supplier.factory(supplier_json)
         self.assertIsNotNone(supplier)
         self.this_session.add(supplier)
+        self.this_session.flush()
+
+    def test_create_receipt(self):
+        receipt_json = {
+            'number' : 1,
+            'time' : "10/10/10",
+            'branch_id' : 1,
+            'line_items' : [
+                1,
+                2
+            ]
+        }
+        receipt = Receipt.factory(receipt_json)
+        self.assertIsNotNone(receipt)
+        self.this_session.add(receipt)
         self.this_session.flush()
 
     def test_add_invoice(self):
