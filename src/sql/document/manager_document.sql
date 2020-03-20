@@ -1,16 +1,16 @@
 SET @myManagerId = 1;
-SET @dateOfInterest = "2020-03-10"
+SET @dateOfInterest = '2020-03-10'
 
 -- What employees were on shift during a specific time?
 WITH my_branch as (
     SELECT 
-        b ->> branch_id
+        b ->> 'branch_id'
     FROM
         branch b
         JOIN employee e
-            b ->> manager_id = e ->> emp_id
+            b ->> 'manager_id' = e ->> 'emp_id'
     WHERE
-        e ->> emp_id = @myEmpId
+        e ->> 'emp_id' = @myEmpId
 ),
 timeCards AS (
 
@@ -18,26 +18,26 @@ timeCards AS (
     -- skip to polygon example
 
     SELECT 
-        (pay ->> emp_role_id) AS 'EmpId',
+        (pay ->> 'emp_role_id') AS 'EmpId',
         dateWorked,
         SUM(hoursWorked) AS 'TotalWorked'
     FROM OPENJSON(pay, '$.time_cards') as cards
        CROSS APPLY OPENJSON(cards.value) as lines
               CROSS APPLY OPENJSON(lines.value)
                      WITH (dateWorked date '$[0]', workType text '$[1]', hoursWorked number '$[2]')
-    GROUP BY (pay ->> emp_role_id), dateWorked
+    GROUP BY (pay ->> 'emp_role_id'), dateWorked
 )
 
 SELECT 
-    (e ->> emp_id) AS 'EmpId',
-    (e -> name ->> first) AS 'FName',
-    (e -> name ->> last) AS 'LName'
+    (e ->> 'emp_id') AS 'EmpId',
+    (e -> 'name' ->> 'first') AS 'FName',
+    (e -> 'name' ->> 'last') AS 'LName'
 FROM
     employee e
     JOIN timeCards tc
-        ON (e ->> emp_id) = tc.EmpId
+        ON (e ->> 'emp_id') = tc.EmpId
 WHERE
-    (e -> roles ->> branch_id) in (select * from my_branch)
+    (e -> 'roles' ->> 'branch_id') in (select * from my_branch)
     and tc.dateWorked = @dateOfInterest;
 ;
 
