@@ -64,6 +64,7 @@ FROM
         ON t.id = en.timecard_id
 WHERE
     e2.end_date is null
+    and e1.end_date is null
     and e1.emp_id = @myEmpId
     AND t.is_approved
 GROUP BY 1, 2;
