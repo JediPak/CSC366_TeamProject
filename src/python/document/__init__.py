@@ -7,6 +7,7 @@ Base = declarative_base()
 class TableNames(enum.Enum):
     EMPLOYEE = 'employee'
     BRANCH = 'branch'
+    PAY = 'pay'
     PAYCHECK = 'paycheck'
     TIME_CARD = 'timeCard'
     TIME_CARD_ENTRY = 'timeCardEntry'
