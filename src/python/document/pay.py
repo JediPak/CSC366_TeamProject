@@ -19,6 +19,7 @@ class Pay(Base):
             'emp_role_id' : { 'type' : 'number' },
             'time_cards':{
                     "type": "array",
+                    "maxItems": 2,
                     "items": {
                         "type": "array",
                         "items": 
