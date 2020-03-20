@@ -21,7 +21,7 @@ class Invoice(Base):
             'deliver_date' : {'type' : 'string'},
             'items' : {'type' : 'array',
                 'minItems': 1,
-                'uniqueItems': 'true',
+                'uniqueItems': True,
                     'list_items' : {'type' : 'object',
                         'item_id' : {'type' : 'number'},
                         'quantity' : {'type' : 'number'},

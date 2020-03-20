@@ -15,7 +15,7 @@ class TestDBSetup(unittest.TestCase):
             'postgresql://postgres:testtest@db.caoodninwjvh.us-east-2.rds.amazonaws.com:5432/postgres',
             echo=True
         )
-        Base.metadata.drop_all(engine)
+        #Base.metadata.drop_all(engine)
         Base.metadata.create_all(engine)
         session = sessionmaker()
         session.configure(bind=engine)
@@ -62,12 +62,10 @@ class TestDBSetup(unittest.TestCase):
             'branch_id' : 1,
             'order_date' : '2019-01-01',
             'deliver_date' : '2019-01-08',
-            'items' : {
-                [
+            'items' : [
                     {1,2,3.50},
                     {2,3,4.20}
                 ]
-            }
         }
 
         invoice = Invoice.factory(invoice_json)
