@@ -3,6 +3,7 @@ from sqlalchemy.orm import sessionmaker
 
 from document import Base
 from document.branch import Branch
+from document.menu_item import MenuItem
 from document.receipt import Receipt
 from document.supplier import Supplier
 from document.invoice import Invoice
@@ -18,6 +19,7 @@ class TestDBSetup(unittest.TestCase):
             'postgresql://postgres:testtest@db.caoodninwjvh.us-east-2.rds.amazonaws.com:5432/postgres',
             echo=True
         )
+
         #Base.metadata.drop_all(engine)
         Base.metadata.create_all(engine)
         session = sessionmaker()
@@ -92,6 +94,46 @@ class TestDBSetup(unittest.TestCase):
         self.assertIsNotNone(supplier)
         self.this_session.add(supplier)
         self.this_session.flush()
+
+    def test_add_menu_item(self):
+        menu_item_json = {
+            'menu_items' : [
+                {
+                    'name' : 'Enchilada',
+                    'item_type' : 'entree',
+                    'price' : '10.50',
+                    'ingredients' : [
+                        'Rice',
+                        'Cheese'
+                    ]
+                },
+                {
+                    'name' : 'Salsa',
+                    'item_type' : 'addon',
+                    'price' : '3.50',
+                    'ingredients' : [
+                        'Tomatoes', 
+                        'Onion',
+                        'Jalapeno'
+                    ]
+                },
+                {
+                    'name' : 'Chips',
+                    'item_type' : 'premade',
+                    'price' : '2.00'
+                },
+                {
+                    'name' : 'Cola',
+                    'item_type' : 'drink',
+                    'price' : '1.00'
+                }
+            ]
+        }
+
+        menu_item = MenuItem.factory(menu_item_json)
+        self.assertIsNotNone(menu_item)
+        self.this_session.add(menu_item)
+        self.this_session.flush()        
 
     def test_create_receipt(self):
         receipt_json = {
