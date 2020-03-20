@@ -101,7 +101,7 @@ class TestDBSetup(unittest.TestCase):
                 {
                     'name' : 'Enchilada',
                     'item_type' : 'entree',
-                    'price' : '10.50',
+                    'price' : 10.50,
                     'ingredients' : [
                         'Rice',
                         'Cheese'
@@ -110,7 +110,7 @@ class TestDBSetup(unittest.TestCase):
                 {
                     'name' : 'Salsa',
                     'item_type' : 'addon',
-                    'price' : '3.50',
+                    'price' : 3.50,
                     'ingredients' : [
                         'Tomatoes', 
                         'Onion',
@@ -120,12 +120,12 @@ class TestDBSetup(unittest.TestCase):
                 {
                     'name' : 'Chips',
                     'item_type' : 'premade',
-                    'price' : '2.00'
+                    'price' : 2.00
                 },
                 {
                     'name' : 'Cola',
                     'item_type' : 'drink',
-                    'price' : '1.00'
+                    'price' : 1.00
                 }
             ]
         }
@@ -180,7 +180,7 @@ class TestDBSetup(unittest.TestCase):
         pay_json = {
             'pay_id' : 1,
             'payperiod' : '01-07-2020',
-            'emp_role_id' : 2,
+            'emp_id' : 2,
             'time_cards' :
             [
                 [
