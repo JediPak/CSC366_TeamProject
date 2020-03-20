@@ -6,10 +6,6 @@ from entities import Base, TableNames
 import enum
 import datetime
 
-class Exemption(enum.Enum):
-    EXEMPT = 0
-    NON_EXEMPT = 1
-
 class RoleName(enum.Enum):
     CEO = 0
     BOARD_MEMBER = 1
@@ -25,7 +21,7 @@ class Role(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(Enum(RoleName), nullable=False)
-    type = Column(Enum(Exemption), nullable=False)
+    exempt = Column(Boolean, nullable=False)
     rate = Column(Float(precision='7,2'), CheckConstraint('rate >= 15.00'), nullable=False)
     UniqueConstraint(name)
 
