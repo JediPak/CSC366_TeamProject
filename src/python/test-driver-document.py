@@ -4,9 +4,11 @@ from sqlalchemy.orm import sessionmaker
 from document import Base
 from document.branch import Branch
 from document.menu_item import MenuItem
+from document.receipt import Receipt
 from document.supplier import Supplier
 from document.invoice import Invoice
 from document.employee import Employee
+from document.pay import Pay
 
 import unittest
 
@@ -133,6 +135,21 @@ class TestDBSetup(unittest.TestCase):
         self.this_session.add(menu_item)
         self.this_session.flush()        
 
+    def test_create_receipt(self):
+        receipt_json = {
+            'number' : 1,
+            'time' : "10/10/10",
+            'branch_id' : 1,
+            'line_items' : [
+                1,
+                2
+            ]
+        }
+        receipt = Receipt.factory(receipt_json)
+        self.assertIsNotNone(receipt)
+        self.this_session.add(receipt)
+        self.this_session.flush()
+
     def test_add_invoice(self):
         invoice_json = {
             'invoice_id' : 1,
@@ -157,6 +174,38 @@ class TestDBSetup(unittest.TestCase):
         invoice = Invoice.factory(invoice_json)
         self.assertIsNotNone(invoice)
         self.this_session.add(invoice)
+        self.this_session.flush()
+
+    def test_add_pay(self):
+        pay_json = {
+            'pay_id' : 1,
+            'payperiod' : '01-07-2020',
+            'emp_role_id' : 2,
+            'time_cards' :
+            [
+                [
+                    '01-07-2020',
+                    True,
+                    [
+                        ['01-07-2020', 'REGULAR', 8],
+                        ['01-09-2020', 'REGULAR', 8]
+                    ]
+                ],
+                [
+                    '01-14-2020',
+                    True,
+                    [
+                        ['01-14-2020', 'REGULAR', 8],
+                        ['01-16-2020', 'PTO', 8]
+                    ]
+                ]
+            ]
+
+        }
+
+        pay = Pay.factory(pay_json)
+        self.assertIsNotNone(pay)
+        self.this_session.add(pay)
         self.this_session.flush()
 
 if __name__ == '__main__':

@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer
-from sqlalchemy.dialects.postgresql import JSON
+from sqlalchemy.dialects.postgresql import JSONB
 
 from document import Base, TableNames
 
@@ -9,7 +9,7 @@ class Receipt(Base):
     __tablename__ = TableNames.RECEIPT.value
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    receipt = Column(JSON, nullable=False)
+    receipt = Column(JSONB, nullable=False)
 
     SCHEMA = {
         'type' : 'object',
@@ -22,8 +22,21 @@ class Receipt(Base):
             },
             'branch_id' : {
                 'type' : 'integer'
+            },
+            'line_items' : { 
+                'type' : 'array',
+                'minItems' : 1,
+                'items' : {
+                    'type' : 'integer'
+                }
             }
-        }
+        },
+        'required' : [
+            'number',
+            'time',
+            'branch_id',
+            'line_items'
+            ]
     }
 
     @staticmethod
