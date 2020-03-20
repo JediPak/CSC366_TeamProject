@@ -64,6 +64,11 @@ class TestDBSetup(unittest.TestCase):
                     'name' : 'Chips',
                     'item_type' : 'premade',
                     'price' : '2.00'
+                },
+                {
+                    'name' : 'Cola',
+                    'item_type' : 'drink',
+                    'price' : '1.00'
                 }
             ]
         }
