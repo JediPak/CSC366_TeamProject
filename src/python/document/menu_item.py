@@ -20,16 +20,27 @@ class MenuItem(Base):
                     'type' : 'string'
                 },
                 'item_type' : {
-                    'type' : 'string'
+                    'type' : 'string',
                     'enum' : ['appetizer', 'entree', 'dessert', 'drink', 'premade', 'addon']
                 },
                 'price' : {
                     'type' : 'number'
                 },
-                'type' : {
-                    'type' : 'string'
+                'ingredients' : {
+                    'type' : 'array',
+                    'properties' : {
+                        'type' : 'object',
+                        'properties' : {
+                            'name' : 'string'
+                        }
+                    }
                 }
-            }
+            },
+            'required' : [
+                'name',
+                'item_type',
+                'price'
+            ]
         }
     }
 
