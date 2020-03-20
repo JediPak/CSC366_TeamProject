@@ -14,15 +14,15 @@ ORDER BY invoice.branch_id, item.id
 SELECT i1.branch_id, AVG(i2.order_date-i1.order_date)
 FROM invoice i1
 JOIN invoice i2
-ON i2.id = (
-    SELECT id
-    FROM invoice i3
-    WHERE i3.order_date > i2.order_date
-        AND i3.branch_id = i2.branch_id
-    ORDER BY order_date
-    LIMIT 1
-)
-    AND i1.branch_id = i2.branch_id
+    ON i2.invoice_id = (
+        SELECT id
+        FROM invoice i3
+        WHERE i3.order_date > i2.order_date
+            AND i3.branch_id = i2.branch_id
+        ORDER BY i2.order_date
+        LIMIT 1
+    )
+        AND i1.branch_id = i2.branch_id
 
 -- Supplier III
 SELECT invoice_id
