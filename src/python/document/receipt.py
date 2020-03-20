@@ -28,9 +28,6 @@ class Receipt(Base):
                 'items' : {
                     'type' : 'object',
                     'properties' : {
-                        'ordinal' : {
-                            'type' : 'integer'
-                         },
                         'menu_id' : {
                             'type' : 'integer'
                         }

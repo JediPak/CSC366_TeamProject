@@ -99,11 +99,9 @@ class TestDBSetup(unittest.TestCase):
             'branch_id' : 1,
             'items' : [
                 {
-                    'ordinal' : 3,
                     'menu_id' : 1
                 },
                 {
-                    'ordinal' : 4,
                     'menu_id' : 2
                 }
             ]
