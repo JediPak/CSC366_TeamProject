@@ -1,8 +1,7 @@
 from sqlalchemy import *
 from sqlalchemy.orm import relationship
 
-from entities import Base
-
+from entities import Base, TableNames
 class Supplier(Base):
     __tablename__ = TableNames.SUPPLIER.value
 

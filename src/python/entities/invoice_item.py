@@ -1,6 +1,6 @@
 from sqlalchemy import *
 from sqlalchemy.orm import relationship
-from entities import Base
+from entities import Base, TableNames
 
 class InvoiceItem(Base):
     __tablename__ = TableNames.INVOICE_ITEM.value

@@ -2,7 +2,7 @@ import datetime
 
 from sqlalchemy import *
 from sqlalchemy.orm import relationship
-from entities import Base
+from entities import Base, TableNames
 
 class Invoice(Base):
     __tablename__ = TableNames.INVOICE.value
