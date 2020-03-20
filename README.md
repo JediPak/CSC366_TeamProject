@@ -1,10 +1,10 @@
 # CSC366_TeamProject
 ## Group Members
- * Tyler Davis
- * Joulien Ivanov
- * Jedi Pak
- * Luke Reckard
- * Austin Bryant
+ * Tyler Davis (tylrdvs277)
+ * Joulien Ivanov (jivanov)
+ * Jedi Pak (JediPak)
+ * Luke Reckard (lreckard)
+ * Austin Bryant (adbryant)
 ## Structure
 ### Relational Structre
  * The relational test driver is at `src/python/test-driver-relational.py`. This will run some sample insertions into a SQLite in-memory DB.
@@ -21,4 +21,5 @@
  * `Receipt` objects are no longer associated with an employee (we totally overlooked tips in our UML).
  * `MenuItem` and `Indgredient` now are subclasses of `Item` for invoices.
  * `AddOn` does not modify a specific `MainDish`
- 
+## Repo
+ * Visit our [repo](https://github.com/JediPak/CSC366_TeamProject).
