@@ -13,16 +13,35 @@ class ItemType(enum.Enum):
     PREMADE = 4
     ADDON = 5
 
-class MenuItem(Base):
-    __tablename__ = TableNames.MENU_ITEM.value
+class Item(Base):
+    __tablename__ = TableNames.ITEM.value
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
+
+    UniqueConstraint(name)
+
+    def __repr__(self):
+        return (
+            'Item(id={}, name={})'
+        ).format(
+            self.id,
+            self.name
+        )
+
+
+class MenuItem(Item):
+    __tablename__ = TableNames.MENU_ITEM.value
+    
+    id = Column(
+        Integer, 
+        ForeignKey('{}.id'.format(TableNames.ITEM.value)), 
+        primary_key=True
+    )
+
     item_type = Column(Enum(ItemType), nullable=False)
     price = Column(Float(precision='7,2'), nullable=False)
     type = Column(String(30), nullable=False)
-
-    UniqueConstraint(name)
 
     __mapper_args__ = {
         'polymorphic_on':type
@@ -175,11 +194,15 @@ class PremadeItem(MenuItem):
         'polymorphic_identity': 'premade_item'
     }
 
-class Ingredient(Base):
+class Ingredient(Item):
     __tablename__ = TableNames.INGREDIENT.value
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(255), nullable=False)
+    id = Column(
+        Integer, 
+        ForeignKey('{}.id'.format(TableNames.ITEM.value)), 
+        primary_key=True
+    )
+
     addons = relationship(
         "AddOn",
         secondary=dish_ingredient_association_table,
