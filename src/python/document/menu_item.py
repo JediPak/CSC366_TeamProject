@@ -21,7 +21,7 @@ class MenuItem(Base):
                     'properties' : {
                         'menu_id' : {
                             'type' : 'integer'
-                        }
+                        },
                         'name' : {
                             'type' : 'string'
                         },

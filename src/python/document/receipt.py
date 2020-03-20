@@ -29,10 +29,10 @@ class Receipt(Base):
                 'items' : {
                     'type' : 'object',
                     'properties' : {
-                        'ordinal' {
+                        'ordinal' : {
                             'type' : 'integer'
-                        }
-                        'menu_id' {
+                        },
+                        'menu_id' : {
                             'type' : 'integer'
                         }
                     }

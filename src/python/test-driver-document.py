@@ -141,8 +141,14 @@ class TestDBSetup(unittest.TestCase):
             'time' : "10/10/10",
             'branch_id' : 1,
             'line_items' : [
-                1,
-                2
+                {
+                    'ordinal' : 1,
+                    'menu_item' : 1,
+                },
+                {
+                    'ordinal' : 2,
+                    'menu_item' : 2,
+                }
             ]
         }
         receipt = Receipt.factory(receipt_json)
