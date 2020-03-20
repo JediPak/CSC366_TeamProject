@@ -12,7 +12,7 @@ ORDER BY invoice ->> branch_id, item ->> id
 
 -- Supplier II: Average time between orders for each branch
 SELECT invoice ->> branch_id,
-    AVG(LAG(invoice ->> order_date, 1))
+    AVG(TO_DATE(invoice ->> order_date, 'YYYY-MM-DD') - TO_DATE(LAG(invoice ->> order_date, 1), 'YYYY-MM-DD'))
         over (order by invoice ->> order_date)
 FROM invoice
 GROUP BY invoice ->> branch_id
