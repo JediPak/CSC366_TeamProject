@@ -17,7 +17,7 @@ class Item(Base):
     __tablename__ = TableNames.ITEM.value
 
     id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
+    name = Column(String(100), nullable=False)
 
     UniqueConstraint(name)
 
