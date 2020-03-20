@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer
-from sqlalchemy.dialects.postgresql import JSON
+from sqlalchemy.dialects.postgresql import JSONB
 
 from document import Base, TableNames
 
@@ -9,7 +9,7 @@ class Invoice(Base):
     __tablename__ = TableNames.INVOICE.value
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    invoice = Column(JSON, nullable=False)
+    invoice = Column(JSONB, nullable=False)
 
     SCHEMA = {
         'type' : 'object',
