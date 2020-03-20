@@ -28,12 +28,12 @@ class TestDBSetup(unittest.TestCase):
     def test_add_employees(self):
         manager_role = Role(
             name=RoleName.BRANCH_MANAGER,
-            type=Exemption.EXEMPT,
+            exempt=True,
             rate=5000.00
         )
         managed_role = Role(
             name=RoleName.CHEF,
-            type=Exemption.NON_EXEMPT,
+            exempt=False,
             rate=20.00
         )
         branch = Branch(
@@ -77,7 +77,7 @@ class TestDBSetup(unittest.TestCase):
     def test_add_paycheck(self):
         manager_role = Role(
             name=RoleName.CEO,
-            type=Exemption.EXEMPT,
+            exempt=True,
             rate=50000.00
         )
 
@@ -112,7 +112,7 @@ class TestDBSetup(unittest.TestCase):
     def test_create_receipt(self):
         manager_role = Role(
             name=RoleName.CEO,
-            type=Exemption.EXEMPT,
+            exempt=True,
             rate=50000.00
         )
 
