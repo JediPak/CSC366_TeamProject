@@ -5,6 +5,7 @@ from document import Base
 from document.branch import Branch
 from document.supplier import Supplier
 from document.invoice import Invoice
+from document.employee import Employee
 
 import unittest
 
@@ -21,21 +22,56 @@ class TestDBSetup(unittest.TestCase):
         session.configure(bind=engine)
         self.this_session = session()
 
-    def test_add_store(self):
+    def test_add_employee(self):
         branch_json = {
-            'manager_id' : 1,
-            'address' : {
-                'street_number' : 1,
-                'street_name' : "Grand Ave.",
-                'city' : "San Luis Obispo",
-                'state' : "CA",
-                'zip' : 93410
-            }
+            'branches' : [
+                {
+                    'branch_id' : 1,
+                    'manager_id' : 1,
+                    'address' : {
+                        'street_number' : 1,
+                        'street_name' : "Grand Ave.",
+                        'city' : "San Luis Obispo",
+                        'state' : "CA",
+                        'zip' : 93410
+                    }
+                }
+            ]
+        }
+
+        employee_json = {
+            'emp_id' : 1,
+            'ssn' : 555555555,
+            'name' : {
+                'first' : 'Tyler',
+                'last' : 'Davis',
+                'title' : 'Mr.'
+            },
+            'roles' : [
+                {
+                    'role' : 'Chef',
+                    'exempt' : False,
+                    'pay' : 20.00,
+                    'start' : '2020-03-12',
+                    'end' : '2020-03-18',
+                    'branch_id' : 1
+                },
+                {
+                    'role' : 'Branch Manager',
+                    'exempt' : True,
+                    'pay' : 3000.00,
+                    'start' : '2020-03-19',
+                    'end' : None,
+                    'branch_id' : 1
+                }
+            ]
         }
 
         branch = Branch.factory(branch_json)
+        emp = Employee.factory(employee_json)
         self.assertIsNotNone(branch)
-        self.this_session.add(branch)
+        self.assertIsNotNone(emp)
+        self.this_session.add_all((branch,emp))
         self.this_session.flush()
 
     def test_add_supplier(self):
