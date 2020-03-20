@@ -63,9 +63,17 @@ class TestDBSetup(unittest.TestCase):
             'order_date' : '2019-01-01',
             'deliver_date' : '2019-01-08',
             'items' : [
-                    {1,2,3.50},
-                    {2,3,4.20}
-                ]
+                {
+                    'item_id' : 1,
+                    'quantity' : 2,
+                    'price' : 3.50
+                },
+                {
+                    'item_id' : 2,
+                    'quantity' :3,
+                    'price' : 4.20
+                },
+            ]
         }
 
         invoice = Invoice.factory(invoice_json)
