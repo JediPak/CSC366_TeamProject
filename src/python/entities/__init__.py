@@ -16,6 +16,7 @@ class TableNames(enum.Enum):
     INVOICE_ITEM = 'invoiceItem'
     SUPPLIER = 'supplier'
     LINE_ITEM = 'lineItem'
+    ITEM = 'item'
     MENU_ITEM = 'menuItem'
     RECEIPT = 'receipt'
     ADD_ON = 'addOn'
