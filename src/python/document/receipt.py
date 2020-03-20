@@ -27,7 +27,7 @@ class Receipt(Base):
                 'type' : 'array',
                 'minItems' : 1,
                 'items' : {
-                    'type' : 'integer'
+                    'type' : 'string'
                 }
             }
         },
