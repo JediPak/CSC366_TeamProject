@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship
 from entities import Base
 
 class Supplier(Base):
-    __tablename__ = 'supplier'
+    __tablename__ = TableNames.SUPPLIER.value
 
     supplier_id = Column(Integer, primary_key=True, autoincrement=True)
     address = Column(String(255), nullable=False)

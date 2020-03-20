@@ -5,7 +5,7 @@ from sqlalchemy.orm import relationship
 from entities import Base
 
 class Invoice(Base):
-    __tablename__ = 'invoice'
+    __tablename__ = TableNames.INVOICE.value
 
     invoice_id = Column(Integer, primary_key=True, autoincrement=True)
     supplier_id = Column(Integer, ForeignKey('supplier.supplier_id'), nullable=False)

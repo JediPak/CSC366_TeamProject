@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from entities import Base
 
 class InvoiceItem(Base):
-    __tablename__ = 'invoiceItem'
+    __tablename__ = TableNames.INVOICE_ITEM.value
 
     invoice_id = Column(Integer, ForeignKey('invoice.invoice_id'), primary_key=True)
     invoice = relationship("Invoice")
